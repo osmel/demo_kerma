@@ -131,7 +131,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =1
+                where  m.id =1 and m.activo=0
 
                 union
 
@@ -140,7 +140,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =2
+                where  m.id =2 and m.activo=0
 
                 union
 
@@ -157,7 +157,7 @@ order by id_numeracion_pregunta
                   LEFT JOIN kerma_capital_humano_actual cha ON cha.id = chp.id_capital_humano_actual
                   LEFT JOIN kerma_categoria_capital_humano cch ON cch.id = cha.id_categoria_capital_humano
 
-                  WHERE m.id =3 and cch.id is not null  AND p.wildcard IS NULL 
+                  WHERE m.id =3 and cch.id is not null  AND p.wildcard IS NULL and m.activo=0
                   group by cch.id
 
                   union
@@ -167,7 +167,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =4
+                where  m.id =4 and m.activo=0
 
                 union
 
@@ -196,7 +196,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =6
+                where  m.id =6 and m.activo=0
 
                 union
 
@@ -207,7 +207,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =7
+                where  m.id =7 and m.activo=0
 
                 union
 
@@ -217,7 +217,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =8
+                where  m.id =8 and m.activo=0
 
                 union
 
@@ -227,7 +227,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =9
+                where  m.id =9 and m.activo=0
 
                 union
 
@@ -237,7 +237,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =10
+                where  m.id =10 and m.activo=0
 
                 union
 
@@ -247,7 +247,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =11
+                where  m.id =11 and m.activo=0
 
 
                 union
@@ -258,7 +258,7 @@ order by id_numeracion_pregunta
                 FROM kerma_cat_view_modulos m
                 INNER JOIN kerma_cat_view_modulo__encabezado_pregunta r ON r.id_modulo = m.id
                 INNER JOIN kerma_cat_view_encabezado_pregunta e ON r.id_encabezado_pregunta = e.id
-                where  m.id =12
+                where  m.id =12 and m.activo=0
                 ) todo ". 
                 $editores."
                 group by  id_principal
