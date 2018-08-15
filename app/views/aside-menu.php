@@ -208,26 +208,6 @@
 
 
 
-            <!--CATALOGOS -->
-
-
-               <li class="m-menu__section">
-                    <h4 class="m-menu__section-text">
-                      <?php   echo 'Catálogos';  ?>
-                    </h4>
-                    <i class="m-menu__section-icon flaticon-more-v3"></i> <!-- no se usa creo -->
-                </li>
-
-
-                <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
-                              <!--Elementos-->
-                              <a href="<?php echo base_url(); ?>preguntas" class="m-menu__link m-menu__toggle"> <!--esonder la rayita de enlace  -->
-                                <i class="m-menu__link-icon fas fa-chart-bar"></i>  <!--Logotipo izquierdo -->
-                                <span class="m-menu__link-text"> <!--Color para la palabra -->
-                                  Preguntas                                </span>
-                                <i class="m-menu__ver-arrow la "></i> <!-- flecha derecha o izquierda -->
-                              </a>
-               </li>
 
               
 

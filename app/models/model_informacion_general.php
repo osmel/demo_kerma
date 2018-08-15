@@ -399,7 +399,6 @@ order by id_numeracion_pregunta
                 }
                 $result->free_result();
 
-
       }  
 
 
