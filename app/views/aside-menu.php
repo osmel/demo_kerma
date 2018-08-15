@@ -25,16 +25,18 @@
                     <i class="m-menu__section-icon flaticon-more-v3"></i> <!-- no se usa creo -->
                 </li>
 
+                <!--
 
                 <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
-                              <!--Elementos-->
-                              <a href="#" class="m-menu__link m-menu__toggle"> <!--esonder la rayita de enlace  -->
-                                <i class="m-menu__link-icon fas fa-chart-bar"></i>  <!--Logotipo izquierdo -->
-                                <span class="m-menu__link-text"> <!--Color para la palabra -->
+
+                              <a href="#" class="m-menu__link m-menu__toggle">
+                                <i class="m-menu__link-icon fas fa-chart-bar"></i>
+                                <span class="m-menu__link-text">
                                   Estatus                                </span>
-                                <i class="m-menu__ver-arrow la "></i> <!-- flecha derecha o izquierda -->
+                                <i class="m-menu__ver-arrow la "></i>
                               </a>
                </li>
+                -->
 
               <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
                               <!--Elementos-->
@@ -108,6 +110,10 @@
                             <li class="m-menu__item " aria-haspopup="true"><a href="<?php echo base_url(); ?>reportes/mercadotecnia" class="m-menu__link ">
                                     <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Merca y Promocion</span></a>
                             </li>
+                            <li class="m-menu__item " aria-haspopup="true"><a href="<?php echo base_url(); ?>reportes/ingresos_cobranza" class="m-menu__link ">
+                                    <i class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span class="m-menu__link-text">Ingresos y Cobranza</span></a>
+                            </li>
+
 
 
 
@@ -208,6 +214,26 @@
 
 
 
+            <!--CATALOGOS -->
+
+
+               <li class="m-menu__section">
+                    <h4 class="m-menu__section-text">
+                      <?php   echo 'Catálogos';  ?>
+                    </h4>
+                    <i class="m-menu__section-icon flaticon-more-v3"></i> <!-- no se usa creo -->
+                </li>
+
+
+                <li class="m-menu__item  m-menu__item--submenu" aria-haspopup="true" m-menu-submenu-toggle="hover">
+                              <!--Elementos-->
+                              <a href="<?php echo base_url(); ?>preguntas" class="m-menu__link m-menu__toggle"> <!--esonder la rayita de enlace  -->
+                                <i class="m-menu__link-icon fas fa-chart-bar"></i>  <!--Logotipo izquierdo -->
+                                <span class="m-menu__link-text"> <!--Color para la palabra -->
+                                  Preguntas                                </span>
+                                <i class="m-menu__ver-arrow la "></i> <!-- flecha derecha o izquierda -->
+                              </a>
+               </li>
 
               
 

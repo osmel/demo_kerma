@@ -69,7 +69,8 @@ class Operacion_abogados extends CI_Controller {
           $data['encabezado'] = $encabezado;
           $data['id_encabezado'] = base64_decode($id_encabezado);
           $data['id_seccion'] = base64_decode($id_seccion);
-		  $data['sub_pregunta']   = $this->model_operacion_abogados->listado_sub_pregunta($data);	          
+		  $data['sub_pregunta']   = $this->model_operacion_abogados->listado_sub_pregunta($data);	 
+		  //print_r($data['sub_pregunta'])         ; die;
 
           $data['subcategorias']   = $this->model_operacion_abogados->listado_subcategorias();
           $data = array_merge($this->data_sistema,$data);

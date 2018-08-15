@@ -135,6 +135,29 @@ public function grupo_rango($data){
 
 
 
+public function rango_elementos_selectores($data){
+   $datos = ("
+    SELECT  
+          tvp.id id_grupo, tvp.descripcion grupo_nombre,
+          GROUP_CONCAT(DISTINCT(vp.descripcion) ORDER BY vp.id SEPARATOR '|') as rangos,
+          GROUP_CONCAT(DISTINCT(vp.id) ORDER BY vp.id SEPARATOR '|') as id_rangos
+
+     FROM  kerma_cat_tipo_valores_predefinidos tvp 
+         LEFT JOIN kerma_cat_valores_predefinidos vp ON vp.id_tipo_valores_predefinidos = tvp.id
+      group by  tvp.id  
+
+    "); 
+    
+      $result = $this->db->query($datos);
+
+        
+        if ( $result->num_rows() > 0 ) {
+                  return $result->result();
+              } else 
+                  return false;
+            $result->free_result();     
+}
+
 
 
 
@@ -805,6 +828,41 @@ group by  id_principal
 
 
 
+  public function crear_relacion_selectores( $data ){    
+
+      $datos = ("
+          SELECT  
+                vp.id
+           FROM  kerma_cat_tipo_valores_predefinidos tvp 
+               INNER JOIN kerma_cat_valores_predefinidos vp ON vp.id_tipo_valores_predefinidos = tvp.id
+           where  tvp.id=".$data['tipo_seleccion']."
+
+          "); 
+    
+        $result = $this->db->query($datos);
+        $elementos = $result->result();
+
+
+
+         foreach ($elementos as $key => $valor) { //  $this->relacion_valores_pregunta (id_pregunta,id_valores_predefinidos)
+
+                  $sql = "INSERT INTO ".$this->relacion_valores_pregunta." (id_pregunta, id_valores_predefinidos) VALUES (".$data['id_pregunta'].", ".$valor->id.") on duplicate key update id_pregunta=".$data['id_pregunta']." , id_valores_predefinidos=".$valor->id;                  
+                 $this->db->query($sql);
+         }          
+                     
+
+
+
+             if ($this->db->affected_rows() > 0){
+                   return true;
+                } else {
+                    return FALSE;
+                }
+                $result->free_result();
+
+
+  }
+
 
 
   
@@ -829,13 +887,19 @@ group by  id_principal
             $this->db->insert($this->preguntas);
 
 
+
                          
 
               if ($this->db->affected_rows() > 0){
                   
                   $data['id_pregunta'] =   $this->db->insert_id();
-
                   self::anadir__grupo_rango($data); //agregar a la relacion datos
+          
+                    if (isset($data['tipo_seleccion'])) {  //agregar el rago de valores de un selector, en caso q la pregunta sea de seleccion
+                       self::crear_relacion_selectores($data);
+                    }
+
+
                   return TRUE;
                 } else {
                     return FALSE;
@@ -940,16 +1004,6 @@ gch.id id_grupo, gch.descripcion grupo_nombre,
     
   
   public function agregar_pregunta( $data ){
-            //$timestamp = time();
-
-              
-            //$uuid = $this->db->query('SELECT UUID() AS uuid')->row()->uuid;
-
-
-            //$id_session = $this->session->userdata('id');
-            //$this->db->set( 'fecha_pc',  gmt_to_local( $timestamp, $this->timezone, TRUE) );
-            //$this->db->set( 'id_usuario',  $id_session );
-            //$this->db->set( 'id', "'".$uuid."'", FALSE);
 
             $id_relacion = self::existe_relacion($data);
             if ( $id_relacion==false ) {
@@ -957,8 +1011,6 @@ gch.id id_grupo, gch.descripcion grupo_nombre,
 
             }
 
-
-            
 
             $this->db->set( 'nombre', $data['nombre'] );
             $this->db->set( 'campo', $data['campo'] );
@@ -972,22 +1024,17 @@ gch.id id_grupo, gch.descripcion grupo_nombre,
             $this->db->insert($this->preguntas);
 
 
-              //INSERT INTO kerma_capital_humano_actual_por_preguntas (id_capital_humano_actual, id_pregunta) VALUES
-              //(111, 478),
-
-
-            
-
               if ($this->db->affected_rows() > 0){
                   
                   $data['id_pregunta'] =   $this->db->insert_id();
-                  //$data['id_btnes']               = json_decode($this->input->post( 'id_btnes' ), true);
-                  
+
+                  self::anadir__btones_aUna_pregunta($data); //agregar a la relacion datos
+
+                    if (isset($data['tipo_seleccion'])) {  //agregar el rago de valores de un selector, en caso q la pregunta sea de seleccion
+                       self::crear_relacion_selectores($data);
+                    }
 
 
-
-
-                self::anadir__btones_aUna_pregunta($data); //agregar a la relacion datos
                 return TRUE;
                 } else {
                     return FALSE;

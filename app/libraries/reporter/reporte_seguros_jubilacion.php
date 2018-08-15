@@ -9,11 +9,11 @@ class reporte_seguros_jubilacion extends Report
     }
 
 
-    public function reporte($reporteId)
+    public function reporte($subindice,$periodo,$anio,$muestras)
     {
         $report = [];
         $this->userId = '2732e323-83a4-11e8-be07-bcee7be16e8e';
-        $struct = $this->getReportStructure($reporteId);
+        $struct = $this->getReportStructure($subindice);
 
         $this->CI->model_reportes->setSection($struct['tabla']);
         $i = 0;
@@ -24,7 +24,7 @@ class reporte_seguros_jubilacion extends Report
                 //$preguntas=implode(",", $struct['respuestas']);
                 $preguntas = $respuesta;
                 $report[$i]['human_capital'] = $this->CI->model_reportes->getDescriptionbyHumanCapital2($humancapital);
-                $data = $this->CI->model_reportes->getUserDataByHumanCapital($preguntas, $humancapital, $this->userId);
+                $data = $this->CI->model_reportes->getUserDataByHumanCapital($preguntas, $humancapital, $this->userId,$periodo,$anio);
 
                 if (@$data[0] == NULL || @$data[0] == "" || empty(@$data[0])) {
                     @$report[$i]['user'] = "NA";
@@ -32,7 +32,7 @@ class reporte_seguros_jubilacion extends Report
                     @$report[$i]['user'] = $data[0];
                 }
 
-                $data = $this->CI->model_reportes->getUsersDataByHumanCapital($preguntas, $humancapital, $this->userId);
+                $data = $this->CI->model_reportes->getUsersDataByHumanCapital($preguntas, $humancapital, $this->userId,$periodo,$anio,$muestras);
                 //var_dump($data);
                 //var_dump(count($data));
 
@@ -58,18 +58,25 @@ class reporte_seguros_jubilacion extends Report
         $total_si = 0;
         $total_no = 0;
         $total = count($data);
-        foreach ($data as $item) {
+        if ($total>0) {
+            foreach ($data as $item) {
 
-            if ($item[0] !== NULL) {
-                $total_si++;
-            } else {
-                $total_no++;
+                if ($item[0] !== NULL) {
+                    $total_si++;
+                } else {
+                    $total_no++;
+                }
             }
+            $porcentaje = (($total_si * 100) / $total);
+            $porcentaje = round($porcentaje, 2, PHP_ROUND_HALF_UP);
+        }else{
+            $porcentaje = ("NA");
         }
 
-        $porcentaje = (($total_si * 100) / $total);
 
-        return round($porcentaje, 2, PHP_ROUND_HALF_UP);
+
+        return $porcentaje;
+
     }
 
     public function prepareJson($report)

@@ -241,7 +241,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
             foreach ($data as $item) {
                 $i++;
                 $migracion['c' . $i] = $item['string_value'];
@@ -260,7 +260,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
             foreach ($data as $item) {
                 $i++;
                 $migracion['c' . $i] = $item['value_numeric'];
@@ -279,7 +279,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
 
             foreach ($data as $item) {
                 if($item['question_id']=='217'){
@@ -352,7 +352,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
 
 
 
@@ -376,7 +376,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
 
 
             foreach ($data as $item) {
@@ -399,7 +399,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
 
 
             foreach ($data as $item) {
@@ -425,7 +425,7 @@ private $usuarios;
             //$migracion['id_usuario'] = $data[0]['user_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
 
 
             foreach ($data as $item) {
@@ -457,7 +457,7 @@ private $usuarios;
             $migracion['id_cha'] = $data[0]['actual_human_capital_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo'] = 4;
+            $migracion['periodo'] = 0;
             //var_dump($migracion);
 
             //if (array_search($human_capital, $socios) !== FALSE) {
@@ -674,7 +674,7 @@ private $usuarios;
             $migracion['id_cha'] = $data[0]['actual_human_capital_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo']=4;
+            $migracion['periodo'] = 0;
 
 
             if ($human_capital==41 || $human_capital==42 || $human_capital==43 || $human_capital==44 || $human_capital==45 || $human_capital==46
@@ -794,7 +794,7 @@ private $usuarios;
             $migracion['id_cha'] = $data[0]['actual_human_capital_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo']=4;
+            $migracion['periodo'] = 0;
 
             if ($human_capital==72 || $human_capital==73 || $human_capital==74 || $human_capital==75 || $human_capital==76 || $human_capital==77) {
                 echo "Guardando Datos:: Usuario=> " . $migracion['id_usuario'] . " Prestaciones => SEGUROS Y SALUD" . " Human Capital=>" . $human_capital . " </br>";
@@ -885,7 +885,7 @@ private $usuarios;
             $migracion['id_cha'] = $data[0]['actual_human_capital_id'];
             $migracion['fecha_creacion'] = $data[0]['date_created'];
             $migracion['fecha_actualizacion'] = $data[0]['last_updated'];
-            $migracion['periodo']=4;
+            $migracion['periodo'] = 0;
 
 
 

@@ -175,7 +175,7 @@
 
 
               //mostrar el tipo de pregunta
-               $this->db->select('t.id id_tipo_pregunta,  t.nombre tipo_pregunta');
+               $this->db->select('tvp.id id_tipo_valores_predefinidos,tvp.descripcion descripcion_valores_predefinidos,t.id id_tipo_pregunta,t.nombre tipo_pregunta');
                
                $this->db->select( 'p.id id_preg, TRIM(p.campo) campo, p.id_tipo_pregunta tipo', false );       
             

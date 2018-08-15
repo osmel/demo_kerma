@@ -126,6 +126,53 @@ class reporte_selectores
 
     }
 
+    public function getPeriodos()
+    {
+        $periodos=$this->CI->model_selectores->getPeriodos();
+
+        $select="";
+
+        foreach ($periodos as $periodo=>$key) {
+            $select.='<option value=\''.addslashes($key['id']).'\'>'.$key['descripcion'].'</option>'.PHP_EOL;
+        }
+
+       return $select;
+    }
+
+    public function getAnios()
+    {
+        $anios=$this->CI->model_selectores->getAnios();
+
+        $select="";
+
+        foreach ($anios as $anio=>$key) {
+            $select.='<option value=\''.addslashes($key['descripcion']).'\'>'.$key['descripcion'].'</option>'.PHP_EOL;
+        }
+
+        return $select;
+    }
+
+    public function getMuestras()
+    {
+        $muestras=$this->CI->model_selectores->getMuestras();
+        //$selector="";
+        //$selector.=" <select class='selectpicker'  multiple data-actions-box='true' id='muestras'>".PHP_EOL;
+
+
+
+        $options="";
+
+        foreach ($muestras as $muetra=>$key) {
+            $options.='<option value=\''.addslashes($key['id_usuario']).'\'>'.$key['nombre'].'</option>'.PHP_EOL;
+        }
+
+        //$selector.=$options;
+        //$selector.=" </select>".PHP_EOL;
+
+        return $options;
+    }
+
+
 
 
 

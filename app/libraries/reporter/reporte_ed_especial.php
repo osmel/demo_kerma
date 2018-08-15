@@ -8,7 +8,7 @@ class reporte_ed_especial extends Report
 
     }
 
-    public function reporte($subindice)
+    public function reporte($subindice,$periodo,$anio,$muestras)
     {
         $report=[];
         $this->userId='2732e323-83a4-11e8-be07-bcee7be16e8e';
@@ -22,7 +22,7 @@ class reporte_ed_especial extends Report
             $report[$i]['human_capital']= $this->CI->model_reportes->getDescriptionbyHumanCapital2($humancapital);
 
 
-            $data = $this->CI->model_reportes->getUserDataByHumanCapital($preguntas,$humancapital,$this->userId);
+            $data = $this->CI->model_reportes->getUserDataByHumanCapital($preguntas,$humancapital,$this->userId,$periodo,$anio);
             $report[$i]['user'] = $this->getMultipleUserData($data);
 
             if(@$data[0]==NULL || @$data[0]==""|| empty(@$data[0]))
@@ -34,14 +34,14 @@ class reporte_ed_especial extends Report
 
 
 
-            $data = $this->CI->model_reportes->getUsersDataByHumanCapital($preguntas, $humancapital, $this->userId);
+            $data = $this->CI->model_reportes->getUsersDataByHumanCapital($preguntas, $humancapital, $this->userId,$periodo,$anio,$muestras);
             $report[$i]['users'] = $this->getMultipleUsersData($data);
 
 
 
            $report[$i]['cuartiles']=$this->getCuartiles($data);
            $report[$i]['niveles'] =$this->getNiveles($data);
-           $report[$i]['ranking'] =$this->getRanking($data,$report[$i]['user']['totalhm']);
+           $report[$i]['ranking'] =$this->getRanking($report[$i]);
            $report[$i]['vsprom'] =$this->getPromedioComparativo($report[$i]['user']['totalhm'],$report[$i]['users']['promedio']);
            $report[$i]['subtitulo']=$struct['subindice_descripcion'];
 
@@ -106,9 +106,9 @@ class reporte_ed_especial extends Report
 
         $promedio=($hombres+$mujeres)/$i;
 
-        $result['promedio']=(float)number_format(($promedio),2,'.',',');
-        $result['hombres']=(float)number_format(($hombres*100)/($hombres+$mujeres),2,'.',',');
-        $result['mujeres']=(float)number_format(($mujeres*100)/($hombres+$mujeres),2,'.',',');
+        @$result['promedio']=(float)number_format(($promedio),2,'.',',');
+        @$result['hombres']=(float)number_format(($hombres*100)/($hombres+$mujeres),2,'.',',');
+        @$result['mujeres']=(float)number_format(($mujeres*100)/($hombres+$mujeres),2,'.',',');
 
 
 
@@ -133,21 +133,34 @@ class reporte_ed_especial extends Report
          return $levels;
     }
 
-    public function getRanking($data,$usuario_promedio)
+    public function getRanking($report)
     {
 
+         $promedio_usuario = $report['user']['totalhm'];
+         $q1 = $report['cuartiles']['q1'];
+         $q2 = $report['cuartiles']['q2'];
+         $q3 = $report['cuartiles']['q3'];
 
-        $matrix=$this->mixMatrix($data);
+         if ($promedio_usuario != 'NA'){
 
-        array_push($matrix, $usuario_promedio);
-        $ranking= $this->CI->statics->ranking_desc($matrix);
-        $pos = array_search($usuario_promedio, array_column($ranking, 'value'));
-        $rank=$ranking[$pos]['ranking'];
+             if (($promedio_usuario >= 0) && ($promedio_usuario <= $q1)) {
+                 $rank = '1er';
+             } else if (($promedio_usuario > $q1) && ($promedio_usuario <= $q2)) {
+                 $rank = '2do';
+             } else if (($promedio_usuario > $q2) && ($promedio_usuario <= $q3)) {
+                 $rank = '3er';
+             } else if (($promedio_usuario > $q3)) {
+                 $rank = '4to';
+             }
+         }else{
+             $rank = 'NA';
+         }
 
-        return $rank . '.°';
+        return $rank;
 
 
     }
+
 
     public function mixMatrix($data)
     {

@@ -754,6 +754,9 @@ a, a:hover {
   top: 2px;
   right: 3px;
 }
+[type=reset], [type=submit], button, html [type=button] {
+    -webkit-appearance: initial;
+}
 
 /* ESTILOS ULISES DISEÑO */
 

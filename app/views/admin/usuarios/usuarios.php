@@ -198,7 +198,7 @@
 
 	    <div class="row">
 	          <div class="col-sm-8 col-md-9"></div>
-	          <div class="col-sm-4 col-md-3" style="margin-bottom: 30px;">
+	           <div class="col-sm-4 col-md-3" style="margin-bottom: 30px;">
 	           	 <a href="/<?php echo $retorno; ?>" class="blanco-btn btn"><i class="fas fa-backward"></i> Regresar</a>
 	          </div>
 	    </div>

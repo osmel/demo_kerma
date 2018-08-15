@@ -318,10 +318,56 @@ jQuery(document).ready(function() {
                           }
        });                     
                               
-
-
-
     });
+
+
+    //llenar el list multiple de botones
+    $('#id_tipo_pregunta[mod="nuevo_pregunta"]').on('change', function() {
+      
+          if ( ( jQuery('#id_tipo_pregunta[mod="nuevo_pregunta"]').val() == 4)  ||  ( jQuery('#id_tipo_pregunta[mod="nuevo_pregunta"]').val() == 5) ) {  // sel. simple y multiple
+
+                
+                url_datos = 'tipos_selectores';
+                jQuery.ajax({
+                                    url : '/kerma/'+url_datos,
+                                    data:{
+                                           id_tipo_pregunta: jQuery('#id_tipo_pregunta[mod="nuevo_pregunta"]').val(),
+                                    },
+                                    type : 'POST',
+                                    dataType : 'json',
+                                    success : function(misdatos) {
+
+                                        $('#bloque_tipo').css('display','block');
+                                        
+                                         
+
+                                        $('#tipo_seleccion[mod="nuevo_pregunta"]').
+                                                  find('option')
+                                                      .remove()
+                                                      .end();
+
+                                           $.each( misdatos.rango_elementos, function( key, elemento ) {
+                                                $('#tipo_seleccion[mod="nuevo_pregunta"]').append('<option value="'+elemento.id_grupo+'">'+elemento.grupo_nombre+'('+elemento.rangos+')'+'</option>'); //.end();
+                                           }); 
+
+                                      $('#tipo_seleccion[mod="nuevo_pregunta"]').selectpicker('refresh');
+
+                                    }
+                 });                     
+                                        
+         }  else { //cuando no es selector
+
+                      $('#tipo_seleccion[mod="nuevo_pregunta"]').
+                                  find('option')
+                                      .remove()
+                                      .end();
+                      $('#tipo_seleccion[mod="nuevo_pregunta"]').selectpicker('refresh');                
+                      $('#bloque_tipo').css('display','none');
+
+         }
+
+
+    });  
     
 
 

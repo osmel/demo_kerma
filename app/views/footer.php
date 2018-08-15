@@ -73,6 +73,9 @@
 
 <script src="https://www.amcharts.com/lib/3/themes/light.js"></script>
 
+<script src="<?php echo base_url(); ?>metronic/dist/default/assets/vendors/custom/flot/flot.bundle.js" type="text/javascript"></script>
+
+
 
 
 

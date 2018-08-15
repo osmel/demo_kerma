@@ -175,20 +175,31 @@
 
 
 										
-												<div class="form-group m-form__group row">
+												    <div class="form-group m-form__group row">
 														<label for="id_tipo_pregunta" class="col-md-2 control-label">Tipo Pregunta</label>
 														<div class="col-7">
-															 
-																	<select name="id_tipo_pregunta" id="id_tipo_pregunta" class="form-control">
-																		<!--<option value="0">Selecciona una opción</option>-->
-																			<?php foreach ( $tipo_preguntas as $tipo ){ ?>
-																					<option value="<?php echo $tipo->id; ?>"><?php echo $tipo->nombre; ?></option>
-																			<?php } ?>
-																			
-																	</select>
-														    
+																<select name="id_tipo_pregunta" id="id_tipo_pregunta" class="form-control" mod="nuevo_pregunta">
+																	<!--<option value="0">Selecciona una opción</option>-->
+																		<?php foreach ( $tipo_preguntas as $tipo ){ ?>
+																				<option value="<?php echo $tipo->id; ?>"><?php echo $tipo->nombre; ?></option>
+																		<?php } ?>
+																		
+																</select>
+																<fieldset style="display:none;"  id="bloque_tipo" >
+																    <select class="selectpicker  tipo_seleccion"  id="tipo_seleccion" name="tipo_seleccion" mod="nuevo_pregunta"   data-style="btn-info" data-actions-box="true" >  
+
+												                     </select>
+											                    </fieldset> 
 														</div>
+
+	
+
 													</div>
+
+
+
+
+													
 
 													<div class="form-group m-form__group row">
 														<label for="id_modulo" class="col-md-2 control-label"  >Módulo</label>

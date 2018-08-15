@@ -140,6 +140,9 @@ $route['validar_nuevo_pregunta']         = 'clasificadores/validar_nuevo_pregunt
 
 
 	$route['botones_pregunta']         = 'clasificadores/botones_pregunta';
+	$route['tipos_selectores']         = 'clasificadores/tipos_selectores';
+	
+	
 
 $route['eliminar_pregunta/(:any)']		= 'clasificadores/eliminar_pregunta/$1';
 $route['validar_eliminar_pregunta']    = 'clasificadores/validar_eliminar_pregunta';

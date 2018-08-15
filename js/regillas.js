@@ -1,5 +1,49 @@
 jQuery(document).ready(function() {
 
+
+/////////////////////////////////////selectores de las categorias/////////////////////////////////       
+
+
+jQuery('body').on('change', '.independiente', function(){
+        
+      if ( jQuery(this).find('option:selected').attr('dependiente_id') ==1 ) {
+
+            //  console.log(   jQuery(this).find('option:selected').attr('dependiente_id')  );
+              
+              jQuery('.d'+jQuery(this).attr('id_preg') ).css('display','');
+              /*
+              $("div.preg_row:visible").each(function(){ 
+                  
+
+                  if  (  jQuery('.d'+$(this).attr('id_preg_principal') ).find('option:selected').attr('dependiente_id')  ==1   ) {
+                          //jQuery('.d'+$(this).attr('id_preg_principal') ).css('display','');
+                          console.log(  jQuery('div.d'+$(this).attr('id_preg_principal') )   ) ;  //.attr('id_preg_principal') find('option:selected').attr('dependiente_id') 
+                  }
+
+              });  */
+
+              
+      } else {
+             jQuery('.d'+jQuery(this).attr('id_preg') ).css('display','none');
+
+             
+             /*
+             $("div.preg_row:hidden").each(function(){ 
+             
+                   jQuery('.d'+$(this).attr('id_preg_principal') ).css('display','none');
+             });
+             */
+
+             
+
+
+      }
+} ); 
+
+jQuery('.independiente').trigger('change');
+////////////////////////////////////////////////////////////////////////////////////
+
+
 //////////////////////////////////////////
     //var hash_url =  window.location.protocol+'//'+window.location.hostname+'/kerma/'; 
 
@@ -40,6 +84,8 @@ jQuery(document).ready(function() {
 
         }
 
+
+ 
     jQuery('body').on('change', '#id_entidad_encabezado, #id_ano_encabezado, #id_periodo_encabezado', function(){
           switch (pathArray[2]) {
              case "informacion_general":  // pude ser multiple "informacion_general", "saeed", "larry": 

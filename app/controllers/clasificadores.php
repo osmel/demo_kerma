@@ -161,6 +161,20 @@ class Clasificadores extends CI_Controller {
      }			
 
 
+     
+
+
+
+	function tipos_selectores(){
+			$data['id_tipo_pregunta']   	= $this->input->post( 'id_tipo_pregunta' );
+		    $data['rango_elementos'] 		= $this->model_clasificadores->rango_elementos_selectores( $data );			
+		    
+			
+
+			echo json_encode($data);  //['botones']
+     }			
+
+
 	function valid_option_multiple( $str,$campo ){
 		if (empty((array) (json_decode($this->input->post( $campo ), true) ))) {
 					$this->form_validation->set_message('valid_option_multiple', '<b class="requerido">*</b> Es necesario que selecciones una <b>%s</b>.');
@@ -200,6 +214,15 @@ class Clasificadores extends CI_Controller {
 
 
 
+
+			$data['id_tipo_pregunta']   	= $this->input->post( 'id_tipo_pregunta' );
+
+			if   ( ($data['id_tipo_pregunta']==4)  || ($data['id_tipo_pregunta']==5) ) {  //seleccion simple o multiples
+				 $data['tipo_seleccion']   	= $this->input->post( 'tipo_seleccion' );
+			}
+			
+
+
 			
 
 
@@ -220,7 +243,7 @@ class Clasificadores extends CI_Controller {
 						$data['placeholder']   			= $this->input->post( 'placeholder' );
 						$data['tooltip']   				= $this->input->post( 'tooltip' );
 						
-						$data['id_tipo_pregunta']   	= $this->input->post( 'id_tipo_pregunta' );
+						
 						
 						$data['id_sub_modulo']   			= $this->input->post( 'id_sub_modulo' );
 

@@ -17,83 +17,13 @@ class Reportes extends CI_Controller
         $this->load->library('reporter/reporte_compensaciones_prestaciones');
         $this->load->library('reporter/reporte_bonos_incentivos');
         $this->load->library('reporter/reporte_tarifas_productividad');
-        $this->load->library('reporter/reporte_ti');
         $this->load->library('reporter/reporte_mercadotecnia');
-
         $this->load->library('reporter/reporte_seguros_jubilacion');
         $this->load->library('reporter/reporte_ti');
+        $this->load->library('reporter/reporte_ingresos_cobranza');
         $this->load->library('reporter/reporte_ed_especial');
-
-
-
-
     }
 
-    public function ajax()
-    {
-        $indice = $this->input->post('indice');
-
-        $data=$this->reporter->reporte($indice);
-        echo json_encode($data);
-    }
-
-
-
-    public function dashboard()
-    {
-            $this->load->view('reportes/reporte');
-    }
-
-
-    public function selectores()
-    {
-
-        $selector = $this->input->post('selector');
-        $valor = $this->input->post('valor');
-
-        switch ($selector){
-            case 1:
-                $data=$this->reporte_selectores->getModulos();
-                echo $data;
-                break;
-            case 2:
-                $data=$this->reporte_selectores->getReportesIndice($valor);
-                echo $data;
-            break;
-            case 3:
-                $data=$this->reporte_selectores->getReportesSubIndice($valor);
-                echo $data;
-                break;
-            case 4:
-                $data=$this->reporte_selectores->getCategorias($valor);
-                echo $data;
-                break;
-            case 5:
-                $data=$this->reporte_selectores->getGrupos($valor);
-                echo $data;
-                break;
-
-
-
-
-
-        }
-
-    }
-
-
-    public function reporte()
-    {
-
-        $parametros =$this->input->post('parametros');
-        $categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $data=$this->reporte_simple->reporte($subindice);
-
-
-        echo json_encode($data);
-
-    }
 
     public function reporte_ti()
     {
@@ -101,14 +31,6 @@ class Reportes extends CI_Controller
 
     }
 
-
-    public function getSubcategorias()
-    {
-     $indice =$this->input->post('indice');
-     $data=$this->reporte_selectores->getSubcategorias($indice);
-     echo $data;
-
-    }
 
     public function getSubSecciones()
     {
@@ -166,38 +88,50 @@ class Reportes extends CI_Controller
         $this->load->view('reportes/ti');
     }
 
+    public function ingresos_cobranza()
+    {
+        $this->load->view('reportes/ingresos_cobranza');
+    }
+
+    public function comparativa_sueldos()
+    {
+        $this->load->view('reportes/comparativa_sueldos');
+    }
     public function reportes_estructura_despacho()
     {
         $parametros =$this->input->post('parametros');
         @$categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        //$muestras   = $parametros['muestras'];
+        //$muestras=(string) implode("', '",$parametros['muestras']);
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1'){
-            $data=$this->reporte_estructura_despacho->reporte($subindice);
+            $data=$this->reporte_estructura_despacho->reporte($subindice,$periodo,$anio,$muestras);
         }elseif ($tipo_rpte=='2'){
-            $data=$this->reporte_ed_especial->reporte($subindice);
+            $data=$this->reporte_ed_especial->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
-
-
     }
-
 
     public function reportes_seguros_jubilacion()
     {
         $parametros =$this->input->post('parametros');
         @$categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1') {
-            $data = $this->reporte_seguros_jubilacion->reporte($subindice);
+            $data = $this->reporte_seguros_jubilacion->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -208,14 +142,16 @@ class Reportes extends CI_Controller
     public function reportes_prestaciones()
     {
         $parametros =$this->input->post('parametros');
-        $categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        @$categoria = $parametros['categoria'];
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1') {
-            $data = $this->reporte_prestaciones->reporte($subindice);
+            $data = $this->reporte_prestaciones->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -226,14 +162,17 @@ class Reportes extends CI_Controller
     public function reportes_compensaciones_prestaciones()
     {
         $parametros =$this->input->post('parametros');
-        $categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
+        @$categoria = $parametros['categoria'];
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
 
         if($tipo_rpte=='1') {
-            $data = $this->reporte_compensaciones_prestaciones->reporte($subindice);
+            $data = $this->reporte_compensaciones_prestaciones->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -247,13 +186,15 @@ class Reportes extends CI_Controller
         $parametros =$this->input->post('parametros');
         // TODO Corregir este error no llegan categorias desde la vista categorias
         @$categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1') {
-            $data = $this->reporte_bonos_incentivos->reporte($subindice);
+            $data = $this->reporte_bonos_incentivos->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -262,17 +203,18 @@ class Reportes extends CI_Controller
     }
     public function reportes_tarifas_productividad()
     {
-
         $parametros =$this->input->post('parametros');
         // TODO Corregir este error no llegan categorias desde la vista categorias
         @$categoria = $parametros['categoria'];
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1') {
-            $data = $this->reporte_bonos_incentivos->reporte($subindice);
+            $data = $this->reporte_tarifas_productividad->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -283,19 +225,18 @@ class Reportes extends CI_Controller
 
     public function reportes_ti()
     {
-
         $parametros =$this->input->post('parametros');
-
         // TODO Corregir este error no llegan categorias desde la vista categorias
-
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1') {
 
-            $data = $this->reporte_ti->reporte($subindice);
+            $data = $this->reporte_ti->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -307,17 +248,38 @@ class Reportes extends CI_Controller
     {
 
         $parametros =$this->input->post('parametros');
-
         // TODO Corregir este error no llegan categorias desde la vista categorias
-
-        $subindice = $parametros['subindice'];
-        $tipo_rpte = $parametros['tipo'];
-
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
 
 
         if($tipo_rpte=='1') {
 
-            $data = $this->reporte_mercadotecnia->reporte($subindice);
+            $data = $this->reporte_mercadotecnia->reporte($subindice,$periodo,$anio,$muestras);
+        }
+
+        echo json_encode($data);
+
+
+    }
+    public function reportes_ingresos_cobranza()
+    {
+
+        $parametros =$this->input->post('parametros');
+        // TODO Corregir este error no llegan categorias desde la vista categorias
+        $subindice  = $parametros['subindice'];
+        $periodo    = $parametros['periodo'];
+        $anio       = $parametros['anio'];
+        $tipo_rpte  = $parametros['tipo'];
+        $muestras=$this->addComillas($parametros['muestras']);
+
+
+        if($tipo_rpte=='1') {
+
+            $data = $this->reporte_ingresos_cobranza->reporte($subindice,$periodo,$anio,$muestras);
         }
 
         echo json_encode($data);
@@ -325,16 +287,38 @@ class Reportes extends CI_Controller
 
     }
 
+    public function getPeriodos()
+    {
+        $data=$this->reporte_selectores->getPeriodos();
+        echo $data;
+    }
+    public function getAnios()
+    {
+        $data=$this->reporte_selectores->getAnios();
+        echo $data;
+    }
 
+    public function getMuestras()
+    {
+        $data=$this->reporte_selectores->getMuestras();
+        echo $data;
+    }
 
+    public function addComillas($data)
+    {
+        $muestras="";
+        foreach ($data as $item){
+            $muestras.= '"' . $item .'"' .',';
+        }
+        return substr($muestras, 0, -1);
+    }
+    public function getSubcategorias()
+    {
+        $indice =$this->input->post('indice');
+        $data=$this->reporte_selectores->getSubcategorias($indice);
+        echo $data;
 
-
-
-
-
-
-
-
+    }
 
 
 }

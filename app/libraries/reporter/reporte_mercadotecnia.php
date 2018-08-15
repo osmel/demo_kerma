@@ -8,7 +8,7 @@ class reporte_mercadotecnia extends Report
 
     }
 
-    public function reporte($subindice)
+    public function reporte($subindice,$periodo,$anio,$muestras)
     {
         $report = [];
         $this->userId = '2732e323-83a4-11e8-be07-bcee7be16e8e';
@@ -24,7 +24,7 @@ class reporte_mercadotecnia extends Report
                 //$preguntas=implode(",", $struct['respuestas']);
                 $preguntas = $respuesta;
 
-                $data = $this->CI->model_reportes->getUserDataByNoHumanCapital($preguntas, $this->userId);
+                $data = $this->CI->model_reportes->getUserDataByNoHumanCapital($preguntas, $this->userId,$periodo,$anio);
 
                 //return $this->prepareJson($report);
                 if (@$data[0] == NULL || @$data[0] == "" || empty(@$data[0])) {
@@ -32,7 +32,7 @@ class reporte_mercadotecnia extends Report
                 } else {
                     @$report[$i]['user'] = $data[0];
                 }
-                $data = $this->CI->model_reportes->getUsersDataByNoHumanCapital($preguntas, $this->userId);
+                $data = $this->CI->model_reportes->getUsersDataByNoHumanCapital($preguntas, $this->userId,$periodo,$anio,$muestras);
                 $report[$i]['porcentajes'] = $this->getPorcentaje($data);
                 $report[$i]['pregunta'] = $struct['preguntas'][$i];
 
@@ -58,17 +58,24 @@ class reporte_mercadotecnia extends Report
         $total_si = 0;
         $total_no = 0;
         $total = count($data);
-        foreach ($data as $item) {
+        if ($total>0) {
+            foreach ($data as $item) {
 
-            if ($item[0] !== NULL) {
-                $total_si++;
-            } else {
-                $total_no++;
+                if ($item[0] !== NULL) {
+                    $total_si++;
+                } else {
+                    $total_no++;
+                }
             }
+            $porcentajes['si'] = round((($total_si * 100) / $total),2,PHP_ROUND_HALF_UP);
+            $porcentajes['no'] = round((($total_no * 100) / $total),2,PHP_ROUND_HALF_UP);
+
+        }else{
+            $porcentajes['si'] = "NA";
+            $porcentajes['no'] = "NA";
+
         }
 
-        $porcentajes['si'] = round((($total_si * 100) / $total),2,PHP_ROUND_HALF_UP);
-        $porcentajes['no'] = round((($total_no * 100) / $total),2,PHP_ROUND_HALF_UP);
 
         return $porcentajes;
     }

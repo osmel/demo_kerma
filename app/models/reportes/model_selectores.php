@@ -167,4 +167,34 @@ class model_selectores extends CI_Model
         return $result;
     }
 
+    public function getPeriodos()
+    {
+        $this->db->select('*');
+        $this->db->from('kerma_periodos');
+        $result = $this->db->get()->result_array();
+        // echo "<pre>" . print_r($this->db,1) . "</pre>";
+
+        return $result;
+    }
+    public function getAnios()
+    {
+        $this->db->select('*');
+        $this->db->from('kerma_anios');
+        $result = $this->db->get()->result_array();
+        // echo "<pre>" . print_r($this->db,1) . "</pre>";
+
+        return $result;
+    }
+
+    public function getMuestras()
+    {
+        $this->db->select('nombre,id_usuario');
+        $this->db->from('kerma_op_configuracion_entidades');
+        $result = $this->db->get()->result_array();
+        // echo "<pre>" . print_r($this->db,1) . "</pre>";
+
+        return $result;
+    }
+
+
 }

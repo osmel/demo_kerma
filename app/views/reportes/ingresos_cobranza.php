@@ -107,20 +107,20 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <div class="m-form__group m-form__group--inline">
-                                            <div class="m-form__label">
-                                                <label>
-                                                    Años:
-                                                </label>
-                                            </div>
-                                            <div class="m-form__control">
-                                                <select class="form-control m-input m-input--square" id="anios">
+                                   <div class="col-md-2">
+                                       <div class="m-form__group m-form__group--inline">
+                                           <div class="m-form__label">
+                                               <label>
+                                                   Años:
+                                               </label>
+                                           </div>
+                                           <div class="m-form__control">
+                                               <select class="form-control m-input m-input--square" id="anios">
 
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
+                                               </select>
+                                           </div>
+                                       </div>
+                                   </div>
                                     <div class="col-md-4">
                                         <div class="m-form__group m-form__group--inline">
                                             <div class="m-form__label">
@@ -138,42 +138,41 @@
                                     </div>
 
                                     <!--
+                                  <div class="col-md-2">
+                                      <div class="m-form__group m-form__group--inline">
+                                          <div class="m-form__label">
+                                              <label>
+                                                  Categorias:
+                                              </label>
+                                          </div>
+                                          <div class="m-form__control">
+                                              <select class="form-control m-input m-input--square" id="categorias">
+                                                  <option value="1">Socio</option>
+                                                  <option value="2">Abogado</option>
+                                                  <option value="3">Pasante</option>
+                                                  <option value="4">No Abogado</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
 
-                                   <div class="col-md-2">
-                                       <div class="m-form__group m-form__group--inline">
-                                           <div class="m-form__label">
-                                               <label>
-                                                   Categorias:
-                                               </label>
-                                           </div>
-                                           <div class="m-form__control">
-                                               <select class="form-control m-input m-input--square" id="categorias">
-                                                   <option value="1">Socio</option>
-                                                   <option value="2">Abogado</option>
-                                                   <option value="3">Pasante</option>
-                                                   <option value="4">No Abogado</option>
-                                               </select>
-                                           </div>
-                                       </div>
-                                   </div>
+                                  <div class="col-md-2">
+                                      <div class="m-form__group m-form__group--inline">
+                                          <div class="m-form__label">
+                                              <label>
+                                                  Subcategorias:
+                                              </label>
+                                          </div>
+                                          <div class="m-form__control">
+                                              <select class="selectpicker" id="subcategorias" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true">
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
 
-                                   <div class="col-md-2">
-                                       <div class="m-form__group m-form__group--inline">
-                                           <div class="m-form__label">
-                                               <label>
-                                                   Subcategorias:
-                                               </label>
-                                           </div>
-                                           <div class="m-form__control">
-                                               <select class="selectpicker" id="subcategorias" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true">
-                                               </select>
-                                           </div>
-                                       </div>
-                                   </div>
 
                                 -->
-
-                               </div>
+                              </div>
 
 
                                 <!--
@@ -283,7 +282,6 @@
 $(document).ready(function() {
 
 
-
     var datatable_reportes  = $('.tabla_reportes').mDatatable({});
 
     var normal={
@@ -292,7 +290,7 @@ $(document).ready(function() {
             type: 'remote', //Obligatorio.Establecer tipo remote para obtener datos remotos de una URL pública
             source: {
                 read: {
-                    url : '/kerma/reportes/reportes_mercadotecnia/',
+                    url : '/kerma/reportes/reportes_ingresos_cobranza/',
                     method: 'POST',  //Método de petición para la solicitud ajax
 
                     params: { //objeto de parámetros que se envia al server
@@ -397,7 +395,7 @@ $(document).ready(function() {
         columns: [
             {
                 field: 'pregunta',
-                title: '',
+                title: 'Pregunta',
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
                 width: 250,
@@ -406,8 +404,8 @@ $(document).ready(function() {
 
             },
             {
-                field: 'user',
-                title: 'Firma',
+                field: 'usuario',
+                title: 'Usuario',
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
                 width: 200,
@@ -416,12 +414,12 @@ $(document).ready(function() {
 
 
                     var status = {
-                        1: {'titulo': row.user, 'clase': 'm-badge--warning'},
-                        2: {'titulo': row.user, 'clase': 'm-badge--metal'},
+                        1: {'titulo': row.usuario, 'clase': 'm-badge--warning'},
+                        2: {'titulo': row.usuario, 'clase': 'm-badge--metal'},
 
                     };
 
-                    switch(row.user) {
+                    switch(row.vsprom) {
                         case 'NA':
                             return  '<span class="m-badge ' + status["2"].clase + ' m-badge--wide">' + status["2"].titulo +'</span>';
                             break;
@@ -435,26 +433,100 @@ $(document).ready(function() {
                 },
             },
             {
-                field: 'porcentaje_si',
-                title: 'Si',
+                field: 'promedio',
+                title: 'Promedio',
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
-                width: 250,
+                //width: 150,
                 // basic templating support for column rendering,
-                template: '{{porcentaje_si}}'
+                template: '{{promedio}}'
+            },
 
+            {
+                field: 'q1',
+                title: '25%',
+                width: 80,
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{q1}}'
             },
             {
-                field: 'porcentaje_no',
-                title: 'No',
+                field: 'q2',
+                title: '50%',
+                width: 80,
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
-                width: 250,
+                //width: 150,
                 // basic templating support for column rendering,
-                template: '{{porcentaje_no}}'
-
+                template: '{{q2}}'
             },
+            {
+                field: 'q3',
+                title: '75%',
+                width: 80,
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{q3}}'
+            },
+            {
+                field: 'alto',
+                title: 'Alto',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{alto}}'
+            },
+            {
+                field: 'bajo',
+                title: 'Bajo',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{bajo}}'
+            },
+            {
+                field: 'ranking',
+                title: 'Ranking',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
 
+                template: '{{ranking}}'
+            },
+            {
+                field: 'vsprom',
+                title: 'vsprom',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: function(row) {
+                    var status = {
+                        1: {'titulo': row.vsprom, 'clase': 'm-badge--metal'},
+                        2: {'titulo': row.vsprom, 'clase': 'm-badge--success'},
+                        3: {'titulo': row.vsprom, 'clase': 'm-badge--info'},
+                    };
+                    switch(row.vsprom) {
+                        case 'NA':
+                            return  '<span class="m-badge ' + status["1"].clase + ' m-badge--wide">' + status["1"].titulo +'</span>';
+                            break;
+                        case 'Arriba':
+                            return  '<span class="m-badge ' + status["2"].clase + ' m-badge--wide">' + status["2"].titulo +'</span>';
+                            break;
+                        case 'Abajo':
+                            return  '<span class="m-badge ' + status["3"].clase + ' m-badge--wide">' + status["3"].titulo +'</span>';
+                            break;
+
+                    }
+                }
+            }
 
         ]
     };
@@ -470,8 +542,9 @@ $(document).ready(function() {
         getPeriodos();
         getAnios();
         getMuestras();
-        getSubcategorias(10);
+        getSubcategorias(7);
     }
+
 
 
     $('#reportes_categorias').on('change', function() {
@@ -633,7 +706,6 @@ $(document).ready(function() {
         });
 
     }
-
     function getSubcategorias(indice)
     {
 
@@ -730,7 +802,6 @@ $(document).ready(function() {
 
 
 
-
     $('#reporte').on('click', function() {
 
 
@@ -758,6 +829,7 @@ $(document).ready(function() {
             alert ("Debes seleccionar una muestra mayor a 2 Firmas");
             return
         }
+
 
 
         if(parametros.subindice =="2.1" || parametros.subindice =="2.2" || parametros.subindice =="2.3"){
@@ -833,7 +905,8 @@ $(document).ready(function() {
 
             grafico.dataProvider.push({
                 "personal": dataSet[i].pregunta,
-                "promedio_firmas": parseFloat(dataSet[i].porcentaje_si)
+                "promedio_firmas": parseFloat(dataSet[i].promedio),
+                "promedio_actual": parseFloat(dataSet[i].usuario)
 
             });
 

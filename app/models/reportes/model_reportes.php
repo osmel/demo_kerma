@@ -13,13 +13,15 @@ class model_reportes extends CI_Model
 
 
     }
-    public function getUserDataByHumanCapital($question,$id_ahc,$id_usuario)
+    public function getUserDataByHumanCapital($question,$id_ahc,$id_usuario,$periodo,$anio)
     {
 
         $this->db->select($question);
         $this->db->from($this->table);
         $this->db->where('id_cha',$id_ahc);
         $this->db->where('id_usuario',$id_usuario);
+        $this->db->where('periodo',$periodo);
+        $this->db->where('YEAR(fecha_actualizacion)',$anio);
         $result = $this->db->get()->row_array();
 
         //echo "<pre>" . print_r($this->db,1) . "</pre>";
@@ -30,12 +32,15 @@ class model_reportes extends CI_Model
 
 
     }
-    public function getUserDataByNoHumanCapital($question,$id_usuario)
+    public function getUserDataByNoHumanCapital($question,$id_usuario,$periodo,$anio)
     {
 
         $this->db->select($question);
         $this->db->from($this->table);
         $this->db->where('id_usuario',$id_usuario);
+        $this->db->where('periodo',$periodo);
+        $this->db->where('YEAR(fecha_actualizacion)',$anio);
+
         $result = $this->db->get()->row_array();
 
         //echo "<pre>" . print_r($this->db,1) . "</pre>";
@@ -47,28 +52,36 @@ class model_reportes extends CI_Model
 
     }
 
-    public function getUsersDataByHumanCapital($question,$id_ahc,$id_usuario)
+    public function getUsersDataByHumanCapital($question,$id_ahc,$id_usuario,$periodo,$anio,$muestras)
     {
+
+
 
         $this->db->select($question);
         $this->db->from($this->table);
         $this->db->where('id_cha',$id_ahc);
+        $this->db->where('id_usuario IN('.$muestras.')');
         $this->db->where('id_usuario !=',$id_usuario);
-
+        $this->db->where('periodo',$periodo);
+        $this->db->where('YEAR(fecha_actualizacion)',$anio);
         $result = $this->db->get()->result_array();
-
+        // echo "<pre>" . print_r($this->db,1) . "</pre>";
         $data=$this->clear2($result);
 
 
         return $data;
 
     }
-    public function getUsersDataByNoHumanCapital($question,$id_usuario)
+    public function getUsersDataByNoHumanCapital($question,$id_usuario,$periodo,$anio,$muestras)
     {
 
         $this->db->select($question);
         $this->db->from($this->table);
+        $this->db->where('id_usuario IN('.$muestras.')');
         $this->db->where('id_usuario !=',$id_usuario);
+        $this->db->where('periodo',$periodo);
+        $this->db->where('YEAR(fecha_actualizacion)',$anio);
+
         $result = $this->db->get()->result_array();
         //echo "<pre>" . print_r($this->db,1) . "</pre>";
         $data=$this->clear2($result);
@@ -97,6 +110,9 @@ class model_reportes extends CI_Model
                 break;
             case 'kerma_op_merca_promocion':
                 $this->table = $this->db->dbprefix('op_merca_promocion');
+                break;
+            case 'kerma_op_ingreso_cobranza':
+                $this->table = $this->db->dbprefix('op_ingreso_cobranza');
                 break;
         }
     }

@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 require_once('Report.php');
-class reporte_ti extends Report
+class reporte_ingresos_cobranza extends Report
 {
     public function __construct()
     {
@@ -33,7 +33,12 @@ class reporte_ti extends Report
                     @$report[$i]['user'] = $data[0];
                 }
                 $data = $this->CI->model_reportes->getUsersDataByNoHumanCapital($preguntas, $this->userId,$periodo,$anio,$muestras);
-                $report[$i]['porcentajes'] = $this->getPorcentaje($data);
+                $report[$i]['promedio'] =$this->getPromedio($data);
+                $report[$i]['cuartiles']=$this->getCuartiles($data);
+                $report[$i]['niveles'] =$this->getNiveles($data);
+                $report[$i]['ranking'] =$this->getRanking($report[$i]);
+                $report[$i]['vsprom'] =$this->getPromedioComparativo($report[$i]['user'],$report[$i]['promedio']);
+                $report[$i]['subtitulo']=$struct['subindice_descripcion'];
                 $report[$i]['pregunta'] = $struct['preguntas'][$i];
 
 
@@ -51,34 +56,7 @@ class reporte_ti extends Report
 
     }
 
-    public function getPorcentaje($data)
-    {
 
-        $porcentajes=[];
-        $total_si = 0;
-        $total_no = 0;
-        $total = count($data);
-        if ($total>0) {
-            foreach ($data as $item) {
-
-                if ($item[0] !== NULL) {
-                    $total_si++;
-                } else {
-                    $total_no++;
-                }
-            }
-            $porcentajes['si'] = round((($total_si * 100) / $total),2,PHP_ROUND_HALF_UP);
-            $porcentajes['no'] = round((($total_no * 100) / $total),2,PHP_ROUND_HALF_UP);
-
-        }else{
-            $porcentajes['si'] = "NA";
-            $porcentajes['no'] = "NA";
-
-        }
-
-
-        return $porcentajes;
-    }
 
     public function getReportStructure($subindice)
     {
@@ -110,24 +88,30 @@ class reporte_ti extends Report
     public function prepareJson($report)
     {
 
-        $json_data = [];
-        $json_data['meta']['page'] = '1';
-        $json_data['meta']['pages'] = '1';
-        $json_data['meta']['perpage'] = '1';
-        $json_data['meta']['total'] = '1';
-        $json_data['meta']['sort'] = 'asc';
-        $json_data['meta']['field'] = 'promedio';
+        $json_data=[];
+        $json_data['meta']['page']='1';
+        $json_data['meta']['pages']='1';
+        $json_data['meta']['perpage']='1';
+        $json_data['meta']['total']='1';
+        $json_data['meta']['sort']='asc';
+        $json_data['meta']['field']='promedio';
 
-        for ($i = 0; $i < count($report); $i++) {
-
-            // $json_data['data'][$i]['humancapital'] = $report[$i]['human_capital'];
-            $json_data['data'][$i]['user'] = $report[$i]['user'];
-            $json_data['data'][$i]['porcentaje_si'] = $report[$i]['porcentajes']['si'];
-            $json_data['data'][$i]['porcentaje_no'] = $report[$i]['porcentajes']['no'];
+        for($i=0;$i<count($report);$i++) {
             $json_data['data'][$i]['pregunta'] = $report[$i]['pregunta'];
-
+            $json_data['data'][$i]['subtitulo']=$report[$i]['subtitulo'];
+            $json_data['data'][$i]['usuario']=$report[$i]['user'];
+            $json_data['data'][$i]['promedio']=$report[$i]['promedio'];
+            $json_data['data'][$i]['q1']=$report[$i]['cuartiles']['q1'];
+            $json_data['data'][$i]['q2']=$report[$i]['cuartiles']['q2'];
+            $json_data['data'][$i]['q3']=$report[$i]['cuartiles']['q3'];
+            $json_data['data'][$i]['alto']=$report[$i]['niveles']['high'];
+            $json_data['data'][$i]['bajo']=$report[$i]['niveles']['low'];
+            $json_data['data'][$i]['ranking']=$report[$i]['ranking'];
+            $json_data['data'][$i]['vsprom']=$report[$i]['vsprom'];
         }
 
+
+        return $json_data;
 
        return $json_data;
 

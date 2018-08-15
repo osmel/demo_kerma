@@ -35,57 +35,50 @@
             <hr>
             <!--pregunta 1-->
             <?php foreach ($sub_pregunta as $key => $value) { ?>
-                <div class="row">
+
+
+            
+                <div class="row preg_row d<?php echo ($value->id_preg_dependiente); ?>" style="<?php echo 'display:'.(($value->id_preg_dependiente==0) ? '':'none' ); ?>"
+                id_preg_principal="<?php echo $value->id_preg; ?>"
+                 >
                     <div style="text-align:right" class="col-7">
-                        <p><?php echo $value->id_numeracion_pregunta.'. '.$value->pregunta; ?><p>
+                        <p><?php echo $value->id_numeracion_pregunta.'. '.$value->pregunta.'. '.$value->id_preg; ?></p>
                     </div>
                     
                     <div style="text-align:center" class="col-3">
-                       
+                          
 
-                                  <?php if ($value->id_tipo_pregunta==4) { // Seleccion?>
+                    
+
+                                  <?php if ( ($value->id_tipo_pregunta==4) || ($value->id_tipo_pregunta==5) ) { // 4-simple, 5-multiples?>
 
                                       <!-- SI/NO -->                                      
-                                      <?php if ($value->id_tipo_valores_predefinidos==8) { //Seleccion Booleana ?>
+                                      
                                               <?php 
                                                  $valores = explode('|', $value->valores);
                                                  $valores_id = explode('|', $value->valores_id);
-                                               ?>
+                                                 $dependiente_id = explode('|', $value->dependiente_id);
+                                                 
+                                                 $simple_multiple = ($value->id_tipo_pregunta==5) ? ' multiple data-style="btn-info" data-actions-box="true" ': ' ';  
+                                               ?> 
 
-                                            <select name="c1"  class="form-control">
+
+
+                                            <select id="<?php echo trim($value->campo); ?>" name="<?php echo $value->campo; ?>" id_preg="<?php echo $value->id_preg; ?>" 
+                                                                                        class="selectpicker form-control independiente" <?php echo $simple_multiple; ?> >
                                                    <?php if ( ($valores[0])  ) { ?>
                                                           <?php foreach ($valores as $key2 => $value2) { ?>
-                                                              <option value="<?php echo $valores_id[$key2]; ?>" orden="<?php echo $key2; ?>" ><?php echo $value2; ?></option>
+                                                              <option value="<?php echo $valores_id[$key2]; ?>" dependiente_id="<?php echo $dependiente_id[$key2]; ?>" orden="<?php echo $key2; ?>" ><?php echo $value2; ?></option>
                                                           <?php } ?>
                                                   <?php } ?>
-                                            </select>
+                                            </select>  
                                             <!-- <span style="color:blue; font-size:10px;"><?php //echo $value->tipo_pregunta; ?></span> -->
                                             <span style="color:transparent;font-size:10px;"><?php echo $value->descripcion_valores_predefinidos; ?></span>
-                                      <?php }  ?>
-
-                                      <!-- MULTIPLES -->                                      
-                                      <?php if ($value->id_tipo_valores_predefinidos<>8) { // <>8 11=Día festivo "multiples" ?>
-                                              <?php 
-                                                 $valores = explode('|', $value->valores);
-                                                 $valores_id = explode('|', $value->valores_id);
-                                               ?>
-
-                                            <select class="selectpicker  multiples_c1" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true" >  
-
-                                                   <?php if ( ($valores[0])  ) { ?>
-                                                          <?php foreach ($valores as $key2 => $value2) { ?>
-                                                              <option value="<?php echo $valores_id[$key2]; ?>" orden="<?php echo $key2; ?>" ><?php echo $value2; ?></option>
-                                                          <?php } ?>
-                                                  <?php } ?>
-                                            </select>
-                                            <span style="color:transparent;font-size:10px;"><?php echo $value->tipo_pregunta; ?></span>
-                                            <span style="color:transparent;font-size:10px;"><?php echo $value->descripcion_valores_predefinidos; ?></span>
-
-                                      <?php }  ?>
-
+                                      
 
 
                                    <?php } ?>
+
 
 
                                    <?php if ($value->id_tipo_pregunta==1) { // input cadena?>
@@ -106,7 +99,7 @@
                                         
                                    <?php } ?>
 
-
+                             
                                    
 
 
@@ -117,10 +110,30 @@
                     </div>
                 </div>
 
+                
+
             <?php } ?>
             <!--FIN pregunta 1-->
+
+
+            <!--btn siguiente-->
            
+                        <div class="row">
+                            <div style="text-align:right" class="col-7">
+
+                            </div>
+                            <div style="text-align:center" class="col-3">
+                                <button  class="btn-siguiente"  id="button_sig" name="button_sig">Siguiente</button>
+                            </div>
+                            <div class="col-2">
+
+                            </div>
+                        </div>
+
             <!--FIN btn siguiente-->
+
+           
+            
 
         </div> <!--FIN preguntas-->
     </div>

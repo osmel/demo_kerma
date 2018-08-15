@@ -61,7 +61,7 @@
                                         </div>
                                     </div>
                                 </div>
-
+                                <!--
                                 <div class="col-md-5">
                                     <div class="m-form__group m-form__group--inline">
                                         <div class="m-form__label">
@@ -77,6 +77,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                -->
 
 
                                 <div class="col-md-1">
@@ -87,7 +88,7 @@
 
 
                             </div>
-                            <!--
+
                             <div class="form-group m-form__group row align-items-center">
 
 
@@ -125,43 +126,59 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="col-md-2">
+                                <div class="col-md-4">
                                     <div class="m-form__group m-form__group--inline">
                                         <div class="m-form__label">
                                             <label>
-                                                Categorias:
+                                                Firmas:
                                             </label>
                                         </div>
                                         <div class="m-form__control">
-                                            <select class="form-control m-input m-input--square" id="categorias">
-                                                <option value="1">Socio</option>
-                                                <option value="2">Abogado</option>
-                                                <option value="3">Pasante</option>
-                                                <option value="4">No Abogado</option>
+                                            <!--<div id="container_muestras"> </div>-->
+                                            <select class='selectpicker'  multiple data-actions-box='true' id='muestras'>
                                             </select>
+
                                         </div>
                                     </div>
                                 </div>
+                                <!--
 
-                                <div class="col-md-2">
-                                    <div class="m-form__group m-form__group--inline">
-                                        <div class="m-form__label">
-                                            <label>
-                                                Subcategorias:
-                                            </label>
-                                        </div>
-                                        <div class="m-form__control">
-                                            <select class="selectpicker" id="subcategorias" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true">
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
+                               <div class="col-md-2">
+                                   <div class="m-form__group m-form__group--inline">
+                                       <div class="m-form__label">
+                                           <label>
+                                               Categorias:
+                                           </label>
+                                       </div>
+                                       <div class="m-form__control">
+                                           <select class="form-control m-input m-input--square" id="categorias">
+                                               <option value="1">Socio</option>
+                                               <option value="2">Abogado</option>
+                                               <option value="3">Pasante</option>
+                                               <option value="4">No Abogado</option>
+                                           </select>
+                                       </div>
+                                   </div>
+                               </div>
 
+                               <div class="col-md-2">
+                                   <div class="m-form__group m-form__group--inline">
+                                       <div class="m-form__label">
+                                           <label>
+                                               Subcategorias:
+                                           </label>
+                                       </div>
+                                       <div class="m-form__control">
+                                           <select class="selectpicker" id="subcategorias" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true">
+                                           </select>
+                                       </div>
+                                   </div>
+                               </div>
 
-
-                            </div>
                             -->
+
+                           </div>
+
 
                             <!--
                             <div class="form-group m-form__group row align-items-center">
@@ -269,13 +286,6 @@
 <script>
     $(document).ready(function() {
 
-        let container={
-            "periodo":"",
-            "anio"   :"",
-            "modulo" :"",
-            "indice":"",
-            "subindice":[]
-        };
 
         var datatable_reportes  = $('.tabla_reportes').mDatatable({});
 
@@ -438,29 +448,13 @@
 
         function construct()
         {
+            getPeriodos();
+            getAnios();
+            getMuestras();
             getSubcategorias(6);
         }
 
-        $('#periodos').on('change', function() {
-            container['periodo'] = $(this).find(":selected").val();
-        });
 
-        $('#anios').on('change', function() {
-            container['anio'] = $(this).find(":selected").val();
-        });
-
-        $('#categorias').on('change', function() {
-            container['categoria'] = $(this).find(":selected").val();
-            var valor = $(this).find(":selected").val();
-            getDataSelct(5,valor);
-
-        });
-
-        $('#reportes_subindice').on('change', function() {
-            var valor = $(this).find(":selected").val();
-            getCategorias(valor);
-
-        });
 
         $('#reportes_categorias').on('change', function() {
             var valor = $(this).find(":selected").val();
@@ -480,7 +474,147 @@
 
         });
 
+        function getAnios()
+        {
 
+
+            var host = window.location.origin;
+            var url  = host+"/kerma/reportes/getAnios";
+
+
+
+
+            $.ajax({
+                // la URL para la petición
+                url : url,
+
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : {
+
+                },
+
+                // especifica si será una petición POST o GET
+                type : 'POST',
+
+                // el tipo de información que se espera de respuesta
+                //dataType : 'JSON',
+
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(response, status, xhr) {
+
+                    $('#anios').html(response)
+                },
+
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    //alert('Disculpe, existió un problema');
+                }
+
+                // código a ejecutar sin importar si la petición falló o no
+                //complete : function(xhr, status) {
+                //alert('Petición realizada');
+                //}
+            });
+
+        }
+        function getPeriodos()
+        {
+
+
+            var host = window.location.origin;
+            var url  = host+"/kerma/reportes/getPeriodos";
+
+
+
+
+            $.ajax({
+                // la URL para la petición
+                url : url,
+
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : {
+
+                },
+
+                // especifica si será una petición POST o GET
+                type : 'POST',
+
+                // el tipo de información que se espera de respuesta
+                //dataType : 'JSON',
+
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(response, status, xhr) {
+
+                    $('#periodos').html(response)
+                },
+
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    //alert('Disculpe, existió un problema');
+                }
+
+                // código a ejecutar sin importar si la petición falló o no
+                //complete : function(xhr, status) {
+                //alert('Petición realizada');
+                //}
+            });
+
+        }
+        function getMuestras()
+        {
+
+
+            var host = window.location.origin;
+            var url  = host+"/kerma/reportes/getMuestras";
+            var selector=selector;
+
+            $.ajax({
+                // la URL para la petición
+                url : url,
+
+                // la información a enviar
+                // (también es posible utilizar una cadena de datos)
+                data : {
+
+                },
+
+                // especifica si será una petición POST o GET
+                type : 'POST',
+
+                // el tipo de información que se espera de respuesta
+                //dataType : 'JSON',
+
+                // código a ejecutar si la petición es satisfactoria;
+                // la respuesta es pasada como argumento a la función
+                success : function(response, status, xhr) {
+
+                    //$('#container_muestras').html(response);
+                    $('#muestras').html(response).selectpicker('refresh');
+                    $('#muestras').selectpicker('selectAll');
+                },
+
+                // código a ejecutar si la petición falla;
+                // son pasados como argumentos a la función
+                // el objeto de la petición en crudo y código de estatus de la petición
+                error : function(xhr, status) {
+                    //alert('Disculpe, existió un problema');
+                }
+
+                // código a ejecutar sin importar si la petición falló o no
+                //complete : function(xhr, status) {
+                //alert('Petición realizada');
+                //}
+            });
+
+        }
         function getSubcategorias(indice)
         {
 
@@ -528,8 +662,6 @@
             });
 
         }
-
-
         function getCategorias(subindice)
         {
 
@@ -585,12 +717,28 @@
             var parametros={
                 'subindice':'',
                 'categoria':'',
-                'tipo'     :''
+                'tipo'     :'',
+                'periodo'  :'',
+                'anio'     :'',
+                'muestras' :[]
             };
 
 
             parametros.categoria = $('#reportes_categorias').find(":selected").val();
             parametros.subindice = $('#reportes_subindice').find(":selected").val();
+            parametros.anio      = $('#anios').find(":selected").val();
+            parametros.periodo   = $('#periodos').find(":selected").val();
+
+            $('#muestras.selectpicker option:selected').each(function(i, selectedElement) {
+                //subcategorias[]['texto'].push($(selectedElement).text());
+                parametros.muestras.push($(selectedElement).val());
+            });
+
+            if(parametros.muestras.length<3){
+                alert ("Debes seleccionar una muestra mayor a 2 Firmas");
+                return
+            }
+
 
             if(parametros.subindice =="2.1" || parametros.subindice =="2.2" || parametros.subindice =="2.3"){
                 parametros.tipo = 2;

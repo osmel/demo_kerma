@@ -19,10 +19,11 @@ class Report
         $this->CI->load->library('statics');
     }
 
-    public function reporte($subindice)
+    public function reporte($subindice,$periodo,$anio,$muestras)
     {
         $report=[];
         $this->userId='2732e323-83a4-11e8-be07-bcee7be16e8e';
+
         $struct=$this->getReportStructure($subindice);
 
 
@@ -31,7 +32,7 @@ class Report
         foreach ($struct['human_capital'] as $humancapital) {
             $preguntas=implode(",", $struct['respuestas']);
             $report[$i]['human_capital']= $this->CI->model_reportes->getDescriptionbyHumanCapital2($humancapital);
-            $data = $this->CI->model_reportes->getUserDataByHumanCapital($preguntas,$humancapital,$this->userId);
+            $data = $this->CI->model_reportes->getUserDataByHumanCapital($preguntas,$humancapital,$this->userId,$periodo,$anio,$muestras);
 
             if(@$data[0]==NULL || @$data[0]==""|| empty(@$data[0]))
                 {
@@ -40,11 +41,11 @@ class Report
                     @$report[$i]['user']=$data[0];
                 }
 
-            $data = $this->CI->model_reportes->getUsersDataByHumanCapital($preguntas, $humancapital, $this->userId);
+            $data = $this->CI->model_reportes->getUsersDataByHumanCapital($preguntas, $humancapital, $this->userId,$periodo,$anio,$muestras);
             $report[$i]['promedio'] =$this->getPromedio($data);
             $report[$i]['cuartiles']=$this->getCuartiles($data);
             $report[$i]['niveles'] =$this->getNiveles($data);
-            $report[$i]['ranking'] =$this->getRanking($data,$report[$i]['user']);
+            $report[$i]['ranking'] =$this->getRanking($report[$i]);
             $report[$i]['vsprom'] =$this->getPromedioComparativo($report[$i]['user'],$report[$i]['promedio']);
             $report[$i]['subtitulo']=$struct['subindice_descripcion'];
             $i++;
@@ -107,16 +108,40 @@ class Report
 
          }
 
-     public function getRanking($data,$usuario_promedio)
+     public function getRanking($report)
      {
-         $matrix=$this->mixMatrix($data);
+         /*
+          $matrix=$this->mixMatrix($data);
 
-         array_push($matrix, $usuario_promedio);
-         $ranking= $this->CI->statics->ranking_desc($matrix);
-         $pos = array_search($usuario_promedio, array_column($ranking, 'value'));
-         $rank=$ranking[$pos]['ranking'];
+          array_push($matrix, $usuario_promedio);
+          $ranking= $this->CI->statics->ranking_desc($matrix);
+          $pos = array_search($usuario_promedio, array_column($ranking, 'value'));
+          $rank=$ranking[$pos]['ranking'];
 
-         return $rank . '.°';
+          return $rank . '.°';
+         */
+
+         $promedio_usuario = $report['user'];
+         $q1 = $report['cuartiles']['q1'];
+         $q2 = $report['cuartiles']['q2'];
+         $q3 = $report['cuartiles']['q3'];
+
+         if ($promedio_usuario != 'NA'){
+
+             if (($promedio_usuario >= 0) && ($promedio_usuario <= $q1)) {
+                 $rank = '1er';
+             } else if (($promedio_usuario > $q1) && ($promedio_usuario <= $q2)) {
+                 $rank = '2do';
+             } else if (($promedio_usuario > $q2) && ($promedio_usuario <= $q3)) {
+                 $rank = '3er';
+             } else if (($promedio_usuario > $q3)) {
+                 $rank = '4to';
+             }
+         }else{
+             $rank = 'NA';
+         }
+
+        return $rank;
      }
      public function getPromedioComparativo($usuario_promedio,$usuarios_promedio)
      {

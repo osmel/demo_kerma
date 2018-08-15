@@ -5,6 +5,11 @@
             height		: 500px;
             font-size	: 8px;
         }
+        #graph_sueldos {
+            width		: 100%;
+            height		: 500px;
+            font-size	: 8px;
+        }
     </style>
 <?php $this->load->view( 'header' ); ?>
 <?php $this->load->view( 'aside-menu.php' ); ?>
@@ -136,44 +141,42 @@
                                             </div>
                                         </div>
                                     </div>
-
                                     <!--
+                                  <div class="col-md-2">
+                                      <div class="m-form__group m-form__group--inline">
+                                          <div class="m-form__label">
+                                              <label>
+                                                  Categorias:
+                                              </label>
+                                          </div>
+                                          <div class="m-form__control">
+                                              <select class="form-control m-input m-input--square" id="categorias">
+                                                  <option value="1">Socio</option>
+                                                  <option value="2">Abogado</option>
+                                                  <option value="3">Pasante</option>
+                                                  <option value="4">No Abogado</option>
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
 
-                                   <div class="col-md-2">
-                                       <div class="m-form__group m-form__group--inline">
-                                           <div class="m-form__label">
-                                               <label>
-                                                   Categorias:
-                                               </label>
-                                           </div>
-                                           <div class="m-form__control">
-                                               <select class="form-control m-input m-input--square" id="categorias">
-                                                   <option value="1">Socio</option>
-                                                   <option value="2">Abogado</option>
-                                                   <option value="3">Pasante</option>
-                                                   <option value="4">No Abogado</option>
-                                               </select>
-                                           </div>
-                                       </div>
-                                   </div>
+                                  <div class="col-md-2">
+                                      <div class="m-form__group m-form__group--inline">
+                                          <div class="m-form__label">
+                                              <label>
+                                                  Subcategorias:
+                                              </label>
+                                          </div>
+                                          <div class="m-form__control">
+                                              <select class="selectpicker" id="subcategorias" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true">
+                                              </select>
+                                          </div>
+                                      </div>
+                                  </div>
 
-                                   <div class="col-md-2">
-                                       <div class="m-form__group m-form__group--inline">
-                                           <div class="m-form__label">
-                                               <label>
-                                                   Subcategorias:
-                                               </label>
-                                           </div>
-                                           <div class="m-form__control">
-                                               <select class="selectpicker" id="subcategorias" multiple title="Seleccionar..." data-style="btn-info" data-actions-box="true">
-                                               </select>
-                                           </div>
-                                       </div>
-                                   </div>
+                               -->
 
-                                -->
-
-                               </div>
+                              </div>
 
 
                                 <!--
@@ -263,6 +266,7 @@
                 </div>
             </div>
             <div id="chartdiv" style="width: 100%"></div>
+            <div id="graph_sueldos" style="width: 100%"></div>
             <div class="row">
                 <div class="col-sm-8 col-md-9"></div>
                 <div class="col-sm-4 col-md-3">
@@ -282,7 +286,13 @@
 <script>
 $(document).ready(function() {
 
-
+    let container={
+        "periodo":"",
+        "anio"   :"",
+        "modulo" :"",
+        "indice":"",
+        "subindice":[]
+    };
 
     var datatable_reportes  = $('.tabla_reportes').mDatatable({});
 
@@ -292,7 +302,7 @@ $(document).ready(function() {
             type: 'remote', //Obligatorio.Establecer tipo remote para obtener datos remotos de una URL pública
             source: {
                 read: {
-                    url : '/kerma/reportes/reportes_mercadotecnia/',
+                    url : '/kerma/reportes/reportes_compensaciones_prestaciones/',
                     method: 'POST',  //Método de petición para la solicitud ajax
 
                     params: { //objeto de parámetros que se envia al server
@@ -306,7 +316,8 @@ $(document).ready(function() {
                             dataSet = raw.data;
 
                         }
-                        graph_bars(dataSet);
+                        //graph_bars(dataSet);
+                        grafica_sueldos(dataSet);
                         return dataSet;
                     }
                 }
@@ -396,18 +407,18 @@ $(document).ready(function() {
         // columns definition
         columns: [
             {
-                field: 'pregunta',
-                title: '',
+                field: 'humancapital',
+                title: 'Personal',
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
                 width: 250,
                 // basic templating support for column rendering,
-                template: '{{pregunta}}'
+                template: '{{humancapital}}'
 
             },
             {
-                field: 'user',
-                title: 'Firma',
+                field: 'usuario',
+                title: 'Usuario',
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
                 width: 200,
@@ -416,12 +427,12 @@ $(document).ready(function() {
 
 
                     var status = {
-                        1: {'titulo': row.user, 'clase': 'm-badge--warning'},
-                        2: {'titulo': row.user, 'clase': 'm-badge--metal'},
+                        1: {'titulo': row.usuario, 'clase': 'm-badge--warning'},
+                        2: {'titulo': row.usuario, 'clase': 'm-badge--metal'},
 
                     };
 
-                    switch(row.user) {
+                    switch(row.vsprom) {
                         case 'NA':
                             return  '<span class="m-badge ' + status["2"].clase + ' m-badge--wide">' + status["2"].titulo +'</span>';
                             break;
@@ -435,26 +446,100 @@ $(document).ready(function() {
                 },
             },
             {
-                field: 'porcentaje_si',
-                title: 'Si',
+                field: 'promedio',
+                title: 'Promedio',
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
-                width: 250,
+                //width: 150,
                 // basic templating support for column rendering,
-                template: '{{porcentaje_si}}'
+                template: '{{promedio}}'
+            },
 
+            {
+                field: 'q1',
+                title: '25%',
+                width: 80,
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{q1}}'
             },
             {
-                field: 'porcentaje_no',
-                title: 'No',
+                field: 'q2',
+                title: '50%',
+                width: 80,
                 // sortable: 'asc', // default sort
                 filterable: false, // disable or enable filtering
-                width: 250,
+                //width: 150,
                 // basic templating support for column rendering,
-                template: '{{porcentaje_no}}'
-
+                template: '{{q2}}'
             },
+            {
+                field: 'q3',
+                title: '75%',
+                width: 80,
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{q3}}'
+            },
+            {
+                field: 'alto',
+                title: 'Alto',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{alto}}'
+            },
+            {
+                field: 'bajo',
+                title: 'Bajo',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: '{{bajo}}'
+            },
+            {
+                field: 'ranking',
+                title: 'Ranking',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
 
+                template: '{{ranking}}'
+            },
+            {
+                field: 'vsprom',
+                title: 'vsprom',
+                // sortable: 'asc', // default sort
+                filterable: false, // disable or enable filtering
+                //width: 150,
+                // basic templating support for column rendering,
+                template: function(row) {
+                    var status = {
+                        1: {'titulo': row.vsprom, 'clase': 'm-badge--metal'},
+                        2: {'titulo': row.vsprom, 'clase': 'm-badge--success'},
+                        3: {'titulo': row.vsprom, 'clase': 'm-badge--info'},
+                    };
+                    switch(row.vsprom) {
+                        case 'NA':
+                            return  '<span class="m-badge ' + status["1"].clase + ' m-badge--wide">' + status["1"].titulo +'</span>';
+                            break;
+                        case 'Arriba':
+                            return  '<span class="m-badge ' + status["2"].clase + ' m-badge--wide">' + status["2"].titulo +'</span>';
+                            break;
+                        case 'Abajo':
+                            return  '<span class="m-badge ' + status["3"].clase + ' m-badge--wide">' + status["3"].titulo +'</span>';
+                            break;
+
+                    }
+                }
+            }
 
         ]
     };
@@ -470,8 +555,9 @@ $(document).ready(function() {
         getPeriodos();
         getAnios();
         getMuestras();
-        getSubcategorias(10);
+        getSubcategorias(3);
     }
+
 
 
     $('#reportes_categorias').on('change', function() {
@@ -633,7 +719,6 @@ $(document).ready(function() {
         });
 
     }
-
     function getSubcategorias(indice)
     {
 
@@ -726,7 +811,6 @@ $(document).ready(function() {
         });
 
     }
-
 
 
 
@@ -827,14 +911,14 @@ $(document).ready(function() {
             };
         //console.log(grafico);
 
-        // console.log(dataSet);
+       // console.log(dataSet);
         for(var i=0; i<dataSet.length;i++){
             //console.log(dataSet[i].humancapital);
 
             grafico.dataProvider.push({
-                "personal": dataSet[i].pregunta,
-                "promedio_firmas": parseFloat(dataSet[i].porcentaje_si)
-
+                "personal": dataSet[i].humancapital,
+                "promedio_firmas": parseFloat(dataSet[i].promedio),
+                "promedio_actual": parseFloat(dataSet[i].usuario)
             });
 
 
@@ -846,7 +930,66 @@ $(document).ready(function() {
 
         var chart = AmCharts.makeChart("chartdiv", grafico);
 
+    }
 
+    function grafica_sueldos(dataSet)
+    {
+        var d1 = [];
+        var d2 = [];
+        for(var i=0; i<dataSet.length;i++){
+            //console.log(dataSet[i].humancapital);
+
+
+
+                d2.push([parseFloat(i),parseFloat(dataSet[i].usuario)]);
+
+
+
+
+        }
+
+        d1.push([1,100],[2,200],[3,300]);
+
+
+
+
+
+
+
+
+
+        var d3 = [];
+        for (var i = 0; i < 14; i += 0.5) {
+            d3.push([i, Math.cos(i)]);
+        }
+
+        var d4 = [];
+        for (var i = 0; i < 14; i += 0.1) {
+            d4.push([i, Math.sqrt(i * 10)]);
+        }
+
+        var d5 = [];
+        for (var i = 0; i < 14; i += 0.5) {
+            d5.push([i, Math.sqrt(i)]);
+        }
+
+        var d6 = [];
+        for (var i = 0; i < 14; i += 0.5 + Math.random()) {
+            d6.push([i, Math.sqrt(2*i + Math.sin(i) + 5)]);
+        }
+
+        console.log(dataSet);
+        console.log(d6);
+        console.log(d2);
+
+        $.plot("#graph_sueldos", [
+         {
+            data: d1,
+            lines: { show: true, fill: false },
+            points: { show: true }
+        }
+
+        ]);
     }
 
 

@@ -223,7 +223,7 @@ jQuery('.selectpicker.profesionales').on('changed.bs.select', function (e, click
 					        elementos["tipo"] = jQuery(this).attr('tipo');  
 					        objeto.push(elementos);
 
-					        console.log(elementos);
+					        //console.log(elementos);
 					    });
 
 
