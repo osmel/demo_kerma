@@ -1,0 +1,5 @@
+.htaccess
+.idea
+.idea/workspace.xml
+app/config/config.php
+app/config/database.php
