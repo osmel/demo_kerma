@@ -185,7 +185,7 @@ order by id_numeracion_pregunta
                   LEFT JOIN kerma_capital_humano_actual cha ON cha.id = chp.id_capital_humano_actual
                   LEFT JOIN kerma_categoria_capital_humano cch ON cch.id = cha.id_categoria_capital_humano
 
-                  WHERE m.id =5 and cch.id is not null  AND p.wildcard IS NULL 
+                  WHERE m.id =5 and cch.id is not null  AND p.wildcard IS NULL and m.activo=0
                   group by cch.id
 
                 union
@@ -398,6 +398,7 @@ order by id_numeracion_pregunta
                     return FALSE;
                 }
                 $result->free_result();
+
 
       }  
 
