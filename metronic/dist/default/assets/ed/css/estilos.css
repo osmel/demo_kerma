@@ -260,7 +260,7 @@ body.m-aside-left--minimize li.m-menu__section + li {
   font-family: 'Montserrat', sans-serif !important;
 }
 .m-grid.m-grid--desktop {
-  height: 100%;
+  min-height: 100%;
 }
 /*****MENU*****/
 /*****FOOTER*****/
