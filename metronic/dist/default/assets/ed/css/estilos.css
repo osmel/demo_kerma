@@ -536,6 +536,7 @@ footer
   font-family: 'Montserrat', sans-serif !important;
   padding-top: 20px;
   padding-bottom: 20px;
+  -webkit-appearance: none;
 }
   .item-m2-socios .btn:hover {
     background-color: #6a0d2a;
