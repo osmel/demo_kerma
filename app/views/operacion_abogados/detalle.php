@@ -42,7 +42,7 @@
                 id_preg_principal="<?php echo $value->id_preg; ?>"
                  >
                     <div style="text-align:right" class="col-7">
-                        <p><?php echo $value->id_numeracion_pregunta.'. '.$value->pregunta.'. '.$value->id_preg; ?></p>
+                        <p><?php echo $value->id_numeracion_pregunta.'. '.$value->pregunta; ?></p>
                     </div>
                     
                     <div style="text-align:center" class="col-3">
