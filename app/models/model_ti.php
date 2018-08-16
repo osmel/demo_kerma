@@ -93,13 +93,18 @@ WHERE m.id =2
             $this->db->select( 'GROUP_CONCAT(DISTINCT(cha.id) ORDER BY cha.id SEPARATOR "|") as grupos_id',false);
 
 
-            
-            $this->db->select('GROUP_CONCAT(DISTINCT(vp.descripcion) ORDER BY vp.id SEPARATOR "|") valores',false);
+             $this->db->select('GROUP_CONCAT(DISTINCT(vp.descripcion) ORDER BY vp.id SEPARATOR "|") valores',false);
             $this->db->select('GROUP_CONCAT(DISTINCT(vp.id) ORDER BY vp.id SEPARATOR "|") valores_id',false);
+            $this->db->select('GROUP_CONCAT((vp.dependiente) ORDER BY vp.id SEPARATOR "|") dependiente_id',false);  //este no es distinc.
+
             $this->db->select('tvp.id id_tipo_valores_predefinidos,tvp.descripcion descripcion_valores_predefinidos,t.id id_tipo_pregunta,t.nombre tipo_pregunta');
 
  
-            $this->db->select( 'p.id id_preg, TRIM(p.campo) campo, p.id_tipo_pregunta tipo', false );
+            $this->db->select( 'p.id id_preg, TRIM(p.campo) campo, p.id_tipo_pregunta tipo, id_preg_dependiente', false );
+            
+
+
+            
             $this->db->from($this->modulos.' m');
             $this->db->join($this->relacion_modulo__encabezado_pregunta.' r', ' r.id_modulo = m.id');
             $this->db->join($this->encabezado_pregunta.' e', ' r.id_encabezado_pregunta = e.id');
