@@ -8,6 +8,8 @@
       <!--Primer fila-->
       
         
+      
+
 
 <div class="contenido_preguntas">
     <div class="row contenido-edd">
@@ -33,13 +35,20 @@
             <hr>
             <!--pregunta 1-->
             <?php foreach ($sub_pregunta as $key => $value) { ?>
-                <div class="row">
+
+
+            
+                <div class="row preg_row d<?php echo ($value->id_preg_dependiente); ?>" style="<?php echo 'display:'.(($value->id_preg_dependiente==0) ? '':'none' ); ?>"
+                id_preg_principal="<?php echo $value->id_preg; ?>"
+                 >
                     <div style="text-align:right" class="col-7">
                         <p><?php echo $value->id_numeracion_pregunta.'. '.$value->pregunta; ?></p>
                     </div>
                     
                     <div style="text-align:center" class="col-3">
-                       
+                          
+
+                    
 
                                   <?php if ( ($value->id_tipo_pregunta==4) || ($value->id_tipo_pregunta==5) ) { // 4-simple, 5-multiples?>
 
@@ -48,19 +57,21 @@
                                               <?php 
                                                  $valores = explode('|', $value->valores);
                                                  $valores_id = explode('|', $value->valores_id);
+                                                 $dependiente_id = explode('|', $value->dependiente_id);
+                                                 
                                                  $simple_multiple = ($value->id_tipo_pregunta==5) ? ' multiple data-style="btn-info" data-actions-box="true" ': ' ';  
                                                ?> 
 
 
 
-                                            <select id="<?php echo trim($value->campo); ?>" name="<?php echo $value->campo; ?>"
-                                                                                        class="selectpicker form-control" <?php echo $simple_multiple; ?> >
+                                            <select id="<?php echo trim($value->campo); ?>" name="<?php echo $value->campo; ?>" id_preg="<?php echo $value->id_preg; ?>" 
+                                                                                        class="selectpicker form-control independiente" <?php echo $simple_multiple; ?> >
                                                    <?php if ( ($valores[0])  ) { ?>
                                                           <?php foreach ($valores as $key2 => $value2) { ?>
-                                                              <option value="<?php echo $valores_id[$key2]; ?>" orden="<?php echo $key2; ?>" ><?php echo $value2; ?></option>
+                                                              <option value="<?php echo $valores_id[$key2]; ?>" dependiente_id="<?php echo $dependiente_id[$key2]; ?>" orden="<?php echo $key2; ?>" ><?php echo $value2; ?></option>
                                                           <?php } ?>
                                                   <?php } ?>
-                                            </select>
+                                            </select>  
                                             <!-- <span style="color:blue; font-size:10px;"><?php //echo $value->tipo_pregunta; ?></span> -->
                                             <span style="color:transparent;font-size:10px;"><?php echo $value->descripcion_valores_predefinidos; ?></span>
                                       
@@ -88,7 +99,7 @@
                                         
                                    <?php } ?>
 
-
+                             
                                    
 
 
@@ -99,25 +110,10 @@
                     </div>
                 </div>
 
+                
+
             <?php } ?>
             <!--FIN pregunta 1-->
-           
-            <!--FIN btn siguiente-->
-
-        </div> <!--FIN preguntas-->
-    </div>
-</div>
-
-
-
-         
-      <!--FIN Primer fila-->
-
-
-     
-
-      </div>
-      <!--FIN Segunda fila-->
 
 
             <!--btn siguiente-->
@@ -136,7 +132,45 @@
 
             <!--FIN btn siguiente-->
 
+           
+            
 
+        </div> <!--FIN preguntas-->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         
+      <!--FIN Primer fila-->
+
+
+     
+
+      </div>
+      <!--FIN Segunda fila-->
 
 
     </div><!--FIN m-content-->
